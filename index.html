@@ -1,0 +1,129 @@
+<html>
+	<head>
+		<style>
+			.cpt{
+				font:36pt "Century Gothic";
+				color:#DD7700;
+				border:solid 1px #CCCCCC;
+				margin:10px;
+				padding:10px;
+				border-radius:6px;
+				text-align:center;
+			}
+			.sms{
+				font:14pt "Century Gothic";
+				color:#DD7700;
+				border:solid 1px #CCCCCC;
+				margin:10px;
+				padding:10px;
+				border-radius:6px;
+			}
+			.dec{
+				font:14pt "Century Gothic";
+				color:#DD7700;
+				border:solid 1px #CCCCCC;
+				margin:10px;
+				padding:10px;
+				border-radius:6px;
+			}
+			.horloge{
+				width:300px;
+				height:100px;
+				border:none;
+				border-radius:0 0 10px 10px;
+				background-color:#DD7700;
+				text-align:center;
+				position:absolute;
+				right:10px;
+				top:0;
+			}
+			.horloge input{
+				border:none;
+				background:none;
+				font:36pt monospace;
+				color:#FFFFFF;
+				text-align:center;
+				margin-top:20px;
+			}
+		</style>
+		<script language="javascript">
+			i=10;
+			function decompt(){
+				t=setTimeout("decompt()",1000);
+				if(i>1){
+					i-=1;
+					document.fo.cpt.value=i;
+				}
+				else{
+					clearTimeout(t);
+					document.fo.cpt.value="Fin";
+				}
+			}
+			max=50;
+			function decsms(){
+				if(document.fo.sms.value.length>max){
+					alert("Vous avez dépassé "+max+" caractères!");
+					document.fo.sms.value=document.fo.sms.value.substring(0,max);
+				}
+				nbr=max-document.fo.sms.value.length;
+				document.fo.dec.value="Il vous reste "+nbr+" caractère(s)";
+			}
+			j=0;
+			dir="toLeft";
+			function chainePro(){
+				setTimeout("chainePro()",20);
+				document.fo.chaine.value=document.fo.sms.value.substring(0,j);
+				if(dir=="toLeft"){
+					j+=1;
+					if(j>document.fo.sms.value.length)
+					dir="toRight";
+				}
+				if(dir=="toRight"){
+					j-=1;
+					if(j<0)
+					dir="toLeft";
+				}
+			}
+			function heure(){
+				setTimeout("heure()",1000);
+				d=new Date();
+				h=d.getHours();
+				m=d.getMinutes();
+				s=d.getSeconds();
+				if(s%2==0)
+					sep=":";
+				else
+					sep=" ";
+				if(h<10) h="0"+h;
+				if(m<10) m="0"+m;
+				if(s<10) s="0"+s;
+				document.fo.horloge.value=h+sep+m+sep+s;
+			}
+			function dateAujourdhui(){
+				jour=new Array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi");
+				mois=new Array("janvier","février","mars","avril","mai","juin","7","8","9","10","11","12");
+				da=new Date();
+				alert(jour[da.getDay()]+" "+da.getDate()+" "+mois[da.getMonth()]+" "+da.getFullYear());
+			}
+			function init(){
+				document.fo.dec.value="Il vous reste "+max+" caractère(s)";
+				document.fo.sms.value="";
+				chainePro();
+				heure();
+				dateAujourdhui();
+			}
+		</script>
+	</head>
+	<body onLoad="decompt(); init();">
+		<form name="fo">
+			<input type="text" name="cpt" value="10" class="cpt"><br>
+			<textarea name="sms" rows="5" cols="40" class="sms" onKeyUp="decsms()">
+			</textarea><br>
+			<input type="text" name="dec" class="dec" size="50"><br>
+			<input type="text" name="chaine" class="dec" size="50"><br>
+			<div class="horloge">
+				<input type="text" name="horloge" size="8">
+			</div>
+		</form>
+	</body>
+</html>
